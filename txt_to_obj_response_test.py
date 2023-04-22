@@ -3,6 +3,7 @@ data = [{'type': 'plotly', 'plot': '{"data":[{"marker":{"color":["rgb(0.50980395
 output1 = data[1]
 output2 = data[2]
 
+##### download base64 file data #####
 # file1 = output1["name"]
 # file2 = output2["name"]
 
@@ -10,13 +11,34 @@ output2 = data[2]
 
 # with open("model.obj","wb") as f:
 #     f.write(base64.decode(output1["plot"]))
+##### end download ######
 
+##### check the things in the dictionary #####
 print("output1:")
-for k,v in output1.items():
-    print(k,v)
+[print(k,v) for k,v in output1.items()]
+   
 
 print()
 print("output2:")
 for k,v in output2.items():
     print(k,v)
+##### end check #####
+
+# import requests
+
+# url = "https://anzorq-point-e-demo.hf.space/file=" + output1["name"]
+
+# # Download the .OBJ text      
+# try:   
+#     r = requests.get("https://anzorq-point-e-demo.hf.space/file=/tmp/3d_model329cb934046dddfd5395e2e09cd3ae958a424ce2.obj")
+# except:
+#     r = requests.get("https://anzorq-point-e-demo.hf.space/file=/tmp/3d_model329cb934046dddfd5395e2e09cd3ae958a424ce2.obj")
+# obj_text = r.text  
+
+# # Write to .OBJ file
+# with open("model.obj", "w") as f:
+#     f.write(obj_text)
+
+
+
 

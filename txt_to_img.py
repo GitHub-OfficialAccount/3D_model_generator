@@ -12,6 +12,7 @@ seed = 13 #random.randint(0,100000) #each seed shows a different result
 num_step = 41
 cfg_weight = 10
 color_weight_lamda = 1
+parameter_5 = "" #I dont know what this is
 
 full_prompt = prompt + ", " + prompt_hidden
 if negative_prompt:
@@ -32,7 +33,7 @@ result = client.predict(
 				num_step,	# int | float representing numeric value between 0 and 100 in 'Number of Steps' Slider component
 				cfg_weight,	# int | float representing numeric value between 0 and 50 in 'CFG weight' Slider component
 				color_weight_lamda,	# int | float representing numeric value between 0 and 2 in 'Color weight lambda' Slider component
-				"good",	# str representing string value in 'parameter_5' Textbox component
+				parameter_5,	# str representing string value in 'parameter_5' Textbox component
 				fn_index=4
 )
 
