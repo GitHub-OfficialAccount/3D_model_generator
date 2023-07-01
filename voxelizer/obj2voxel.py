@@ -1,9 +1,9 @@
 import subprocess
 
-resolution = 32
+resolution = 256
 
-obj_file = "chess" + ".obj"
-vox_file = "chess-1" + ".vox"
+obj_file = "base" + ".obj"
+vox_file = "base-1" + ".vox"
 
 executable = "voxelizer\obj2voxel.exe"
 args = f"{obj_file} {vox_file} -r {resolution}"
