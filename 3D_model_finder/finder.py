@@ -3,8 +3,6 @@ import requests
 import os
 from config import api_key
 
-keyword = "ironman"
-page = ""
 folder = "3D_model_finder/STLfiles"
 image_folder = "3D_model_finder/Images"
 
@@ -57,29 +55,31 @@ def data_reader(data):
             print(f"\t{tag['name']}: {tag['count']}")
         print("\n")
 
-def data_converter(data):
+def data_converter(data): #clean data
     result = []
     for hit in data['hits']:
         dict_holder = {}
         dict_holder['id'] = hit['id']
-        dict_holder['name'] = hit['name'].replace(" ", "_").replace("/", "-").replace(":", "-")
+        dict_holder['name'] = hit['name'].replace(" ", "_").replace("/", "-").replace(":", "-").replace('"', "-").replace("(","-").replace(")","-")
         dict_holder['preview_image'] = hit['preview_image']
         result.append(dict_holder)
 
     return result
 
-def multiple_files_indicator(result):
+def multiple_files_indicator(result): #indicates whether the number of parts a 3D model has
     s = requests.Session()
-    for thing in result:
+    for i in range(len(result)):
+        thing = result[i]
         id = thing["id"]
         url = generate_url(action="get files", keyword=id, page=1)
         response = s.get(url)
         data = response.json()
         file_num = len(data)
-        print(f"{thing['name']} has {file_num} parts")
+        result[i]["parts"] = file_num
+        # print(f"{thing['name']} has {file_num} parts")
+    return result
 
-def download_file(result, choice=1):
-    index = choice - 1
+def download_file_from_index(result, index=0):
     thing = result[index]
     id = thing["id"]
     thing_name = thing["name"]
@@ -114,17 +114,27 @@ def download_images(result):
             f.write(response.content)
         print(f"Preview Image Saved Successfully: {file_path}")
 
+def get_image_url_from_index(result, index):
+    name = result[index]['name']
+    img_url = f"3D_model_finder/Images/{name}.jpg"
+    return img_url
+
 if __name__ == "__main__":
-    data = fetch_data(generate_url(action="search", keyword=keyword, page=page))
-
-    result = data_converter(data)
-
-    # multiple_files_indicator(result)
-
-    # download_images(result)
-
-    download_file(result, 5)
+    keyword = "ironman"
+    page = ""
     
+    data = fetch_data(generate_url(action="search", keyword=keyword, page=page)) 
+    result = data_converter(data) #clean data
+    result = multiple_files_indicator(result) #indicates whether the number of parts a 3D model has
 
+    download_images(result)
+
+    # choice = 5 #user input
+
+    # download_file_from_choice(result, choice)
+
+    # img_url = get_image_url_from_choice(result, choice)
+    
+    # print(img_url)
 
     
